@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Paypal Rechner</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<style>
+		html {
+			font-family: Arial, Helvetica, Sans;
+		}
+
+		h1 {
+			color: navy;
+		}
+
+		table td {
+			padding: 10px;
+		}
+
+		.buttons input {
+			width: 100%;
+		}
+	</style>
+	<script type="text/javascript">
+		function calc() {
+			var betrag = parseFloat(document.getElementById("vksum").value.replace(",", "."));
+			var ks = document.getElementById("ksyes").checked
+
+			if (ks) {
+				result = Math.round(100 * (betrag + 0.35) / (1 - 0.0249)) / 100;
+			} else {
+				result = betrag;
+			}
+			let formatter = new Intl.NumberFormat('de-DE', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+			document.getElementById("total").value = formatter.format(result);
+			document.getElementById("cost").value = formatter.format(Math.round(100 * (result - betrag)) / 100);
+			return false;
+		}
+	</script>
+</head>
+
+<body>
+
+	<div class="container mt-5">
+		<h1>Paypal Rechner</h1>
+		<p>
+			<i>
+				Dieses Tool berechnet, wie viel man bei PayPal mehr zahlen muss,
+				damit der Verkäufer nach Abzug der Käuferschutz-Gebühren wieder
+				den ursprünglich geforderten Betrag erhält<sup>1</sup>.<br>
+
+			</i>
+		</p>
+		<p>
+		<form onsubmit="return calc();">
+			<table>
+				<tr>
+					<td>Betrag, den Verkäufer erhalten soll: </td>
+					<td class="input-group has-validation"><input type="number" step="0.01" class="form-control"
+							name="vksum" id="vksum" style="text-align: right;" required></input> <span
+							class="input-group-text">€</span></td>
+				</tr>
+				<tr>
+					<td>Käuferschutz?</td>
+					<!--<td><input  style="text-align: right;" id="ksyes" name="ks" type="radio" value="yes" checked> ja <input name="ks" type="radio" value="no"> nein</td>-->
+					<td>
+						<div class="form-check form-switch">
+							<input id="ksyes" name="ks" class="form-check-input" type="checkbox" role="switch"
+								id="switchCheckChecked" checked>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>Zu überweisender Betrag:</td>
+					<td class="input-group"><input class="form-control" style="text-align: right;" disabled readonly
+							name="total" id="total"></input><span class="input-group-text">€</span></td>
+				</tr>
+				<tr>
+					<td>Mehrkosten/Gebühren:</td>
+					<td class="input-group"><input class="form-control" style="text-align: right;" disabled readonly
+							name="cost" id="cost"></input><span class="input-group-text">€</span></td>
+				</tr>
+				<tr class="buttons">
+					<td><input type="submit" class="btn btn-primary" value="Berechnen" /></td>
+					<td><input type="reset" class="btn btn-secondary" /></td>
+				</tr>
+			</table>
+
+
+		</form>
+		</p>
+		<p>
+			<hr>
+			<small><sup>1</sup> Die Gebühren betragen mit Käuferschutz 0,35€ plus 2,49% des Gesamtbetrags.</small>
+		</p>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+			crossorigin="anonymous"></script>
+	</div>
+</body>
+
+</html>
